@@ -11,7 +11,7 @@ Having a gui makes your app looks better and makes it more user friendly, howeve
 
 ### How to use
 Here is a example of how to use this lib: 
-```
+```python3
 import cmdWrapper
 
 
