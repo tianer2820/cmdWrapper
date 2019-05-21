@@ -1,8 +1,6 @@
 # cmdWrapper
-cmdWrapper is a very simple python gui lib based
-on wxpython. It allows programmers to create
-simple gui wrappers based on their command line program.
+cmdWrapper is a very simple python gui lib based on wxpython. It allows programmers to create simple gui wrappers for their command line program.
 
 
 ### What is this
-Creating GUI programs is difficult and time consuming, but most people prefer GUIs over command lines. Many powerful apps were
+Having a gui makes your app looks better and makes it more user friendly, however, makeing a GUI is difficult and time consuming. CmdWrapper lets you create simple gui wrappers for command line apps.
