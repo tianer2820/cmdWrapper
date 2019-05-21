@@ -5,8 +5,9 @@ cmdWrapper is a very simple python gui lib based on wxpython. It allows programm
 ### What is this
 Having a gui makes your app looks better and makes it more user friendly, however, makeing a GUI is difficult and time consuming. CmdWrapper lets you create simple gui wrappers for command line apps.
 
-### What does it looks like
+### What it looks like
 ![test1.py](/screen_shots/test1.png)
+![test2.py](/screen_shots/test2.png)
 
 ### How to use
 Here is a example of how to use this lib: 
@@ -35,4 +36,4 @@ wrapper.bind(func)
 # show it
 wrapper.show()
 ```
-What the lib is doing is just getting inputs from the user. By adding different "entries", you can get different types of data.
+What the lib is doing is just getting inputs from the user. By adding different "entries", you can get different types of data. See more exmaples in [examples](/examples)
