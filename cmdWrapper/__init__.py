@@ -133,7 +133,7 @@ class Wrapper:
             if i > 3:
                 i = 1
             wx.CallAfter(self._but.SetLabel, ('Running' + '.' * i))
-        wx.CallAfter(self._but.SetLabel, ('GO!'))
+        wx.CallAfter(self._but.SetLabel, 'GO!')
         wx.CallAfter(self._but.Enable)
 
     def show(self, size=(300, 300)):
@@ -165,4 +165,4 @@ class Wrapper:
 
     def show_message(self, text):
         assert type(text) == str
-        wx.MessageDialog(self._window, text).ShowModal()
+        wx.CallAfter(wx.MessageDialog(self._window, text).ShowModal)

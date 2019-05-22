@@ -7,6 +7,7 @@ def func(args):
     print(args)
     time.sleep(5)
     print('done!')
+    wrapper.show_message('Done!')
 
 
 # initiallize a Wrapper object
