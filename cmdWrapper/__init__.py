@@ -162,3 +162,7 @@ class Wrapper:
         :param function: the function
         """
         self._call_function = function
+
+    def show_message(self, text):
+        assert type(text) == str
+        wx.MessageDialog(self._window, text).ShowModal()
