@@ -13,16 +13,16 @@ class Wrapper:
     the wrapper object
     """
     def __init__(self, title: str, min_window_size=(300, 200)):
-        self.app = wx.App()
-        self.window = wx.Frame(None)
-        self.window.SetMinSize(min_window_size)
-        self.window.SetTitle(title)
+        self._app = wx.App()
+        self._window = wx.Frame(None)
+        self._window.SetMinSize(min_window_size)
+        self._window.SetTitle(title)
 
-        self.box = wx.BoxSizer(wx.VERTICAL)
-        self.arglist = []
-        self.call_function = None
+        self._box = wx.BoxSizer(wx.VERTICAL)
+        self._arglist = []
+        self._call_function = None
 
-        self.run_thread: threading.Thread = None
+        self._run_thread: threading.Thread = None
 
     def add_int(self, name, default=0):
         """
@@ -32,9 +32,9 @@ class Wrapper:
         :param default: the default value
         """
         assert type(default) == int
-        entry = lib.IntEntry(self.window, name, default)
-        self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
-        self.arglist.append(entry)
+        entry = lib.IntEntry(self._window, name, default)
+        self._box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
+        self._arglist.append(entry)
 
     def add_float(self, name, default=0.0):
         """
@@ -44,9 +44,9 @@ class Wrapper:
         :param default: the default value
         """
         assert type(default) == float
-        entry = lib.FloatEntry(self.window, name, default)
-        self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
-        self.arglist.append(entry)
+        entry = lib.FloatEntry(self._window, name, default)
+        self._box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
+        self._arglist.append(entry)
 
     def add_text(self, name, default=''):
         """
@@ -56,9 +56,9 @@ class Wrapper:
         :param default: default value
         """
         assert type(default) == str
-        entry = lib.TextEntry(self.window, name, default)
-        self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
-        self.arglist.append(entry)
+        entry = lib.TextEntry(self._window, name, default)
+        self._box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
+        self._arglist.append(entry)
 
     def add_open_file(self, name, default=''):
         """
@@ -68,9 +68,9 @@ class Wrapper:
         :param default: the default value
         """
         assert type(default) == str
-        entry = lib.OpenFileEntry(self.window, name, default)
-        self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
-        self.arglist.append(entry)
+        entry = lib.OpenFileEntry(self._window, name, default)
+        self._box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
+        self._arglist.append(entry)
 
     def add_save_file(self, name, default=''):
         """
@@ -80,9 +80,9 @@ class Wrapper:
         :param default: the default value
         """
         assert type(default) == str
-        entry = lib.SaveFileEntry(self.window, name, default)
-        self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
-        self.arglist.append(entry)
+        entry = lib.SaveFileEntry(self._window, name, default)
+        self._box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
+        self._arglist.append(entry)
 
     def add_dir(self, name, default=''):
         """
@@ -92,9 +92,9 @@ class Wrapper:
         :param default: the default value
         """
         assert type(default) == str
-        entry = lib.DirEntry(self.window, name, default)
-        self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
-        self.arglist.append(entry)
+        entry = lib.DirEntry(self._window, name, default)
+        self._box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
+        self._arglist.append(entry)
 
     def add_boolean(self, name, default=False):
         """
@@ -104,9 +104,9 @@ class Wrapper:
         :param default: the default value
         """
         assert type(default) == bool
-        entry = lib.BooleanEntry(self.window, name, default)
-        self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
-        self.arglist.append(entry)
+        entry = lib.BooleanEntry(self._window, name, default)
+        self._box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
+        self._arglist.append(entry)
 
     def _go(self, e):
         """
@@ -115,19 +115,19 @@ class Wrapper:
         :param e: event
         """
         args = {}
-        for entry in self.arglist:
+        for entry in self._arglist:
             args[entry.get_name()] = entry.get_value()
 
-        self.run_thread = threading.Thread(target=self.call_function, args=(args,))
+        self._run_thread = threading.Thread(target=self._call_function, args=(args,))
         # self.call_function(args)
-        self.run_thread.start()
+        self._run_thread.start()
         self._but.Disable()
         self.refresh_thread = threading.Thread(target=self.refresh)
         self.refresh_thread.start()
 
     def refresh(self):
         i = 1
-        while self.run_thread.is_alive():
+        while self._run_thread.is_alive():
             time.sleep(0.5)
             i += 1
             if i > 3:
@@ -142,16 +142,16 @@ class Wrapper:
 
         :param size: size of the window in pixels
         """
-        if self.call_function is None:
+        if self._call_function is None:
             raise ReferenceError('please bind a call back function first!')
-        self._but = wx.Button(self.window)
+        self._but = wx.Button(self._window)
         self._but.SetLabel('GO!')
         self._but.Bind(wx.EVT_BUTTON, self._go)
-        self.box.Add(self._but, 0, wx.ALL | wx.EXPAND, 4)
-        self.window.SetSizer(self.box)
-        self.window.SetSize(size)
-        self.window.Show()
-        self.app.MainLoop()
+        self._box.Add(self._but, 0, wx.ALL | wx.EXPAND, 4)
+        self._window.SetSizer(self._box)
+        self._window.SetSize(size)
+        self._window.Show()
+        self._app.MainLoop()
 
     def bind(self, function: Callable):
         """
@@ -161,4 +161,4 @@ class Wrapper:
 
         :param function: the function
         """
-        self.call_function = function
+        self._call_function = function
