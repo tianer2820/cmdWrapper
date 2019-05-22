@@ -1,9 +1,12 @@
 import cmdWrapper
+import time
 
 
 # define a call back function
 def func(args):
     print(args)
+    time.sleep(5)
+    print('done!')
 
 
 # initiallize a Wrapper object

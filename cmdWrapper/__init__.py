@@ -4,6 +4,8 @@ a simple gui wrapper for command line programs
 import wx
 import cmdWrapper.wxlib as lib
 from typing import Callable
+import threading
+import time
 
 
 class Wrapper:
@@ -19,6 +21,8 @@ class Wrapper:
         self.box = wx.BoxSizer(wx.VERTICAL)
         self.arglist = []
         self.call_function = None
+
+        self.run_thread: threading.Thread = None
 
     def add_int(self, name, default=0):
         """
@@ -113,7 +117,24 @@ class Wrapper:
         args = {}
         for entry in self.arglist:
             args[entry.get_name()] = entry.get_value()
-        self.call_function(args)
+
+        self.run_thread = threading.Thread(target=self.call_function, args=(args,))
+        # self.call_function(args)
+        self.run_thread.start()
+        self._but.Disable()
+        self.refresh_thread = threading.Thread(target=self.refresh)
+        self.refresh_thread.start()
+
+    def refresh(self):
+        i = 1
+        while self.run_thread.is_alive():
+            time.sleep(0.5)
+            i += 1
+            if i > 3:
+                i = 1
+            wx.CallAfter(self._but.SetLabel, ('Running' + '.' * i))
+        wx.CallAfter(self._but.SetLabel, ('GO!'))
+        wx.CallAfter(self._but.Enable)
 
     def show(self, size=(300, 300)):
         """
@@ -123,10 +144,10 @@ class Wrapper:
         """
         if self.call_function is None:
             raise ReferenceError('please bind a call back function first!')
-        but = wx.Button(self.window)
-        but.SetLabel('GO!')
-        but.Bind(wx.EVT_BUTTON, self._go)
-        self.box.Add(but, 0, wx.ALL | wx.EXPAND, 4)
+        self._but = wx.Button(self.window)
+        self._but.SetLabel('GO!')
+        self._but.Bind(wx.EVT_BUTTON, self._go)
+        self.box.Add(self._but, 0, wx.ALL | wx.EXPAND, 4)
         self.window.SetSizer(self.box)
         self.window.SetSize(size)
         self.window.Show()
