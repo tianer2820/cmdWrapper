@@ -15,6 +15,7 @@ wrapper.add_int('int2')
 wrapper.add_float('float1')
 wrapper.add_open_file('open1')
 wrapper.add_save_file('open2')
+wrapper.add_boolean('boolean1', True)
 
 # bind our functions to the wrapper
 wrapper.bind(func)

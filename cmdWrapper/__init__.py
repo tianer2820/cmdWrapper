@@ -20,53 +20,75 @@ class Wrapper:
         self.arglist = []
         self.call_function = None
 
-    def add_int(self, name):
+    def add_int(self, name, default=0):
         """
         add a int entry to the window
 
         :param name: name of the entry
+        :param default: the default value
         """
-        entry = lib.IntEntry(self.window, name)
+        assert type(default) == int
+        entry = lib.IntEntry(self.window, name, default)
         self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
         self.arglist.append(entry)
 
-    def add_float(self, name):
+    def add_float(self, name, default=0.0):
         """
         add a int entry to the window
 
         :param name: name of the entry
+        :param default: the default value
         """
-        entry = lib.FloatEntry(self.window, name)
+        assert type(default) == float
+        entry = lib.FloatEntry(self.window, name, default)
         self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
         self.arglist.append(entry)
 
-    def add_open_file(self, name):
+    def add_open_file(self, name, default=''):
         """
         add a int entry to the window
 
         :param name: name of the entry
+        :param default: the default value
         """
-        entry = lib.OpenFileEntry(self.window, name)
+        assert type(default) == str
+        entry = lib.OpenFileEntry(self.window, name, default)
         self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
         self.arglist.append(entry)
 
-    def add_save_file(self, name):
+    def add_save_file(self, name, default=''):
         """
         add a int entry to the window
 
         :param name: name of the entry
+        :param default: the default value
         """
-        entry = lib.SaveFileEntry(self.window, name)
+        assert type(default) == str
+        entry = lib.SaveFileEntry(self.window, name, default)
         self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
         self.arglist.append(entry)
 
-    def add_dir(self, name):
+    def add_dir(self, name, default=''):
         """
         add a int entry to the window
 
         :param name: name of the entry
+        :param default: the default value
         """
-        entry = lib.DirEntry(self.window, name)
+        assert type(default) == str
+        entry = lib.DirEntry(self.window, name, default)
+        self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
+        self.arglist.append(entry)
+
+    def add_boolean(self, name, default=False):
+        """
+        add a boolean entry to the window
+
+        :param name: name of the entry
+        :param default: the default value
+        """
+        assert type(default) == bool
+        entry = lib.BooleanEntry(self.window, name, default)
         self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
         self.arglist.append(entry)
 
@@ -81,9 +103,11 @@ class Wrapper:
             args[entry.get_name()] = entry.get_value()
         self.call_function(args)
 
-    def show(self):
+    def show(self, size=(300, 300)):
         """
         show the window
+
+        :param size: size of the window in pixels
         """
         if self.call_function is None:
             raise ReferenceError('please bind a call back function first!')
@@ -92,6 +116,7 @@ class Wrapper:
         but.Bind(wx.EVT_BUTTON, self._go)
         self.box.Add(but, 0, wx.ALL | wx.EXPAND, 4)
         self.window.SetSizer(self.box)
+        self.window.SetSize(size)
         self.window.Show()
         self.app.MainLoop()
 
