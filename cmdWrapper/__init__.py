@@ -44,6 +44,18 @@ class Wrapper:
         self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
         self.arglist.append(entry)
 
+    def add_text(self, name, default=''):
+        """
+        add a text entry
+
+        :param name: name of the entry
+        :param default: default value
+        """
+        assert type(default) == str
+        entry = lib.TextEntry(self.window, name, default)
+        self.box.Add(entry, 0, wx.ALL | wx.EXPAND, 2)
+        self.arglist.append(entry)
+
     def add_open_file(self, name, default=''):
         """
         add a int entry to the window

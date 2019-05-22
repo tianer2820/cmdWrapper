@@ -16,9 +16,10 @@ wrapper.add_float('float1')
 wrapper.add_open_file('open1')
 wrapper.add_save_file('open2')
 wrapper.add_boolean('boolean1', True)
+wrapper.add_text('text1', 'helloworld!')
 
 # bind our functions to the wrapper
 wrapper.bind(func)
 
 # show it
-wrapper.show()
+wrapper.show((300, 400))
